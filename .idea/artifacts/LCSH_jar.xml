@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="LCSH:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/LCSH_jar</output-path>
+    <root id="archive" name="LCSH.jar">
+      <element id="module-output" name="LCSH" />
+    </root>
+  </artifact>
+</component>

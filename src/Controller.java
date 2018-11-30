@@ -50,4 +50,9 @@ public class Controller {
     void setLanguage(String str) {
         throw new NotImplementedException();
     }
+
+    public void exit(){
+        if(currentStats != null)
+            currentStats.close();
+    }
 }

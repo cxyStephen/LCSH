@@ -173,4 +173,8 @@ public class Player {
         String type = winStreak ? "win" : "loss";
         return streak + " game " + type + " streak";
     }
+
+    public boolean isWinStreak() {
+        return winStreak;
+    }
 }

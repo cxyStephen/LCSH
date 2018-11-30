@@ -12,15 +12,18 @@ public class Main extends Application {
         Controller controller = new Controller();
 
         Parent root = new StackPane();
+        primaryStage.setTitle("LCSH v0.2");
         ((StackPane) root).getChildren().add(new Label(
-                "hi this is the first functional(ish) version of my champ select helper.\n" +
+                "hi this is the second version of my champ select helper. it looks nicer.\n" +
                 "leave this window open and copy the join messages in champ select.\n" +
                  "it doesnt have to be exact as long as you get the name and \"joined the lobby\"\n\n" +
                 "e.g:\nŚtephen joined the lobby\nBCKC joined the lobby\nTheorize joined the lobby\n\n" +
                 "© Stephen X Chen (cxystephen.com) "
         ));
-        primaryStage.setTitle("LCSH v0.1");
         primaryStage.setScene(new Scene(root, 450, 200));
+        primaryStage.setOnCloseRequest(event -> {
+            controller.exit();
+        });
         primaryStage.show();
     }
 

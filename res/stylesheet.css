@@ -1,0 +1,123 @@
+#main-pane {
+    -fx-background-color: rgba(36,36,36,0.95);
+    -fx-padding: 10 2 0 2;
+}
+
+#title {
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+#default {
+    -fx-text-fill: white;
+    -fx-alignment: center;
+    -fx-font-size: 12;
+    -fx-text-alignment: center;
+}
+
+#smaller {
+    -fx-text-fill: white;
+    -fx-alignment: center;
+    -fx-font-size: 11;
+}
+
+#loading {
+    -fx-text-fill: white;
+    -fx-alignment: center;
+    -fx-font-size: 18;
+    -fx-font-style: italic;
+}
+
+#info {
+    -fx-background-color: rgb(36,36,36);
+    -fx-text-fill: white;
+    -fx-font-size: 18;
+    -fx-alignment: center;
+}
+
+#playerButton {
+    -fx-border-width: 0;
+    -fx-background-color: transparent;
+    -fx-font-size: 16;
+    -fx-text-fill: #ff598e;
+    -fx-padding: 0;
+}
+
+#closeButton {
+    -fx-text-fill: white;
+    -fx-font-size: 18;
+    -fx-background-radius: 0;
+    -fx-background-color: #b41b23;
+}
+
+#closeButton:hover {
+    -fx-background-color: #7b1418;
+}
+
+#playerButton:hover {
+    -fx-text-fill: #52abff;
+    -fx-background-color: rgba(36,36,36,1);
+}
+
+#win{
+    -fx-text-fill: #d2ffd2;
+    -fx-font-size: 12;
+}
+
+#loss{
+    -fx-text-fill: #ffd2d2;
+    -fx-font-size: 12;
+}
+
+.separator {
+    -fx-padding: 0 15 0 15;
+    -fx-opacity: .25;
+}
+
+#Unranked {
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-text-fill: white;
+}
+
+#Bronze {
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-text-fill: rgb(106, 91, 63);
+}
+
+#Silver {
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-text-fill: #9ea3b0;
+}
+
+#Gold {
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-text-fill: #fabc44;
+}
+
+#Platinum {
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-text-fill: #04b1a1;
+}
+
+#Diamond {
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-text-fill: #048ab4;
+}
+
+#Master {
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-text-fill: #fa576f;
+}
+
+#Challenger {
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-text-fill: #fa576f;
+}

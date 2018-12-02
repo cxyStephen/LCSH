@@ -1,6 +1,6 @@
 #main-pane {
     -fx-background-color: rgba(36,36,36,0.95);
-    -fx-padding: 10 2 0 2;
+    -fx-padding: 8 0 0 0;
 }
 
 #title {
@@ -29,7 +29,7 @@
 }
 
 #info {
-    -fx-background-color: rgb(36,36,36);
+    -fx-background-color: rgb(18,18,18);
     -fx-text-fill: white;
     -fx-font-size: 18;
     -fx-alignment: center;
@@ -74,7 +74,7 @@
     -fx-opacity: .25;
 }
 
-#Unranked {
+#Level {
     -fx-font-weight: bold;
     -fx-alignment: center;
     -fx-text-fill: white;

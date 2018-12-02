@@ -7,12 +7,14 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    public static final String version = "0.3";
+
     @Override
     public void start(Stage primaryStage) throws Exception{
         Controller controller = new Controller();
 
         Parent root = new StackPane();
-        primaryStage.setTitle("LCSH v0.2");
+        primaryStage.setTitle("LCSH v" + version);
         ((StackPane) root).getChildren().add(new Label(
                 "hi this is the second version of my champ select helper. it looks nicer.\n" +
                 "leave this window open and copy the join messages in champ select.\n" +

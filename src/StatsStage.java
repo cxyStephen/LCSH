@@ -48,7 +48,7 @@ public class StatsStage extends Stage{
         initLayout();
 
         for(String name : playerNames) {
-            Task task = new opggTask(players, name);
+            Task task = new opggTask(name);
             Thread th = new Thread(task);
             th.setDaemon(true);
             th.start();
@@ -130,7 +130,15 @@ public class StatsStage extends Stage{
 
             VBox recentBox = new VBox(5);
             recentBox.setPrefWidth(paneWidth-rankBox.getPrefWidth() - overallBox.getPrefWidth());
-            addChild(recentBox, createLabel("title","Past " + p.getNumRecent() + " games: " + p.getRecentWLString(),0));
+            String recentTitle;
+            switch (p.getNumRecent()) {
+                case 0: recentTitle = "No recent games.";
+                        break;
+                case 1: recentTitle = "Last game: " + (p.isWinStreak() ? "W" : "L");
+                        break;
+                default: recentTitle = "Past " + p.getNumRecent() + " games: " + p.getRecentWLString();
+            }
+            addChild(recentBox, createLabel("title",recentTitle,0));
             String streakType = p.isWinStreak() ? "win" : "loss";
             addChild(recentBox, createLabel(streakType, p.getStreakString(),0));
             addChild(recentBox, createLabel(p.getKdaString(),0));
@@ -179,7 +187,7 @@ public class StatsStage extends Stage{
 
      Node bottomBox(){
         HBox box = new HBox();
-        Label info = createLabel("info", "LCSH v0.2  -  © Stephen X Chen", paneWidth * 0.7);
+        Label info = createLabel("info", "LCSH v" + Main.version + "  -  © Stephen X Chen", paneWidth * 0.7);
         info.setPrefHeight(paneHeight * 0.05);
         addChild(box, info);
         Button exit = new Button("close");
@@ -199,15 +207,14 @@ public class StatsStage extends Stage{
                     .replace("&#039;","")
                     .replace(".","");
         else
-            name = "error";
+            name = "default";
         String url = type + "/" + name + ".png";
         InputStream urlStream = StatsStage.class.getResourceAsStream(url);
         Image img = null;
         try {
             img = new Image(urlStream);
         } catch (Exception e) {
-            e.printStackTrace();
-            img = new Image(StatsStage.class.getResourceAsStream("error.png"));
+            img = new Image(StatsStage.class.getResourceAsStream(type + "/" + "default.png"));
         }
         ImageView imgv = new ImageView(img);
         imgv.setFitWidth(width);//size map
@@ -232,11 +239,9 @@ public class StatsStage extends Stage{
 
     static class opggTask extends Task {
         private final String name;
-        private final ConcurrentLinkedQueue players;
 
-        public opggTask(ConcurrentLinkedQueue players, String name) {
+        public opggTask(String name) {
             this.name = name;
-            this.players = players;
         }
 
         @Override

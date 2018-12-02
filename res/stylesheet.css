@@ -47,6 +47,7 @@
     -fx-text-fill: white;
     -fx-font-size: 18;
     -fx-background-radius: 0;
+    -fx-background-insets: 0;
     -fx-background-color: #b41b23;
 }
 
@@ -57,6 +58,18 @@
 #playerButton:hover {
     -fx-text-fill: #52abff;
     -fx-background-color: rgba(36,36,36,1);
+}
+
+#minButton {
+    -fx-text-fill: white;
+    -fx-font-size: 18;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-background-color: #181818;
+}
+
+#minButton:hover {
+    -fx-background-color: #363636;
 }
 
 #win{
@@ -120,4 +133,14 @@
     -fx-font-weight: bold;
     -fx-alignment: center;
     -fx-text-fill: #fa576f;
+}
+
+#infoBox {
+    -fx-background-color: rgba(36,36,36,0.95);
+}
+
+#infoText {
+    -fx-font-size: 16;
+    -fx-text-fill: white;
+    -fx-padding: 15;
 }

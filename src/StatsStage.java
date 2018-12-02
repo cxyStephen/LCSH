@@ -25,7 +25,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class StatsStage extends Stage{
 
-    private ConcurrentLinkedQueue<Player> players;
     private static Map<String, HBox> playerHBoxes;
     private static double paneWidth;
     private static double paneHeight;
@@ -33,8 +32,8 @@ public class StatsStage extends Stage{
 
     public StatsStage(List<String> playerNames) {
         super();
+        getIcons().add(new Image(StatsStage.class.getResourceAsStream("icon.png")));
 
-        players = new ConcurrentLinkedQueue<>();
         playerHBoxes = new HashMap<>();
 
         setAlwaysOnTop(true);

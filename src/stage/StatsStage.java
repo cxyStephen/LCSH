@@ -1,3 +1,10 @@
+package stage;
+
+import data.Player;
+import main.Util;
+import propertymanager.PropertyManager;
+import webparser.OpggParser;
+
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.geometry.Orientation;
@@ -7,44 +14,35 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
-import java.awt.*;
+import java.awt.Desktop;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.Map;
 
-public class StatsStage extends Stage{
+public class StatsStage extends LCSHStage{
 
     private static Map<String, HBox> playerHBoxes;
     private static double paneWidth;
     private static double paneHeight;
     private List<String> playerNames;
 
-    public StatsStage(List<String> playerNames) {
-        super();
-        getIcons().add(new Image(StatsStage.class.getResourceAsStream("icon.png")));
+    public StatsStage(PropertyManager pm, List<String> playerNames) {
+        super(pm);
+        setAlwaysOnTop(true);
 
         playerHBoxes = new HashMap<>();
-
-        setAlwaysOnTop(true);
-        initStyle(StageStyle.TRANSPARENT);
         this.playerNames = playerNames;
 
-        Rectangle2D screen = Screen.getPrimary().getVisualBounds();
-        paneWidth = screen.getWidth()*0.23;
-        paneHeight = screen.getHeight();
-
-        initLayout();
+        addElements();
 
         for(String name : playerNames) {
             Task task = new opggTask(name);
@@ -54,7 +52,10 @@ public class StatsStage extends Stage{
         }
     }
 
-    private void initLayout(){
+    Scene initLayout(){
+        Rectangle2D screen = Screen.getPrimary().getVisualBounds();
+        paneWidth = screen.getWidth()*0.23;
+        paneHeight = screen.getHeight();
 
         setHeight(paneHeight);
         setWidth(paneWidth);
@@ -64,6 +65,12 @@ public class StatsStage extends Stage{
         GridPane grid = new GridPane();
         grid.setId("main-pane");
         grid.setVgap(5);
+
+        return new Scene(grid, Color.TRANSPARENT);
+    }
+
+    private void addElements() {
+        GridPane grid = (GridPane)getScene().getRoot();
         for(int i = 0; i < 5; i++) {
             Node box;
             if(i < playerNames.size()) {
@@ -77,10 +84,6 @@ public class StatsStage extends Stage{
         }
 
         grid.add(bottomBox(), 0, 9);
-
-        Scene scene = new Scene(grid, Color.TRANSPARENT);
-        scene.getStylesheets().add("stylesheet.css");
-        setScene(scene);
     }
 
     private Node emptyBox() {
@@ -108,7 +111,7 @@ public class StatsStage extends Stage{
 
             VBox rankBox = new VBox();
             rankBox.setPrefWidth(paneWidth * 0.3);
-            addChild(rankBox, getImage("rank", p.getRank(), rankBox.getPrefWidth()));
+            addChild(rankBox, Util.getImage("rank", p.getRank(), rankBox.getPrefWidth()));
             addChild(rankBox, createLabel(p.getRank(), p.getRankString(), rankBox.getPrefWidth()));
             addChild(rankBox, createLabel(p.getOverallWinLoss(), rankBox.getPrefWidth()));
 
@@ -169,7 +172,7 @@ public class StatsStage extends Stage{
 
     static Node championBox(String champ, String stats) {
         HBox championBox = new HBox(5);
-        addChild(championBox, getImage("champ", champ, 40));
+        addChild(championBox, Util.getImage("champ", champ, 40));
 
         if(stats == null)
             return championBox;
@@ -186,7 +189,7 @@ public class StatsStage extends Stage{
 
      Node bottomBox(){
         HBox box = new HBox();
-        Label info = createLabel("info", "LCSH v" + Main.version + "  -  © Stephen X Chen", paneWidth * 0.7);
+        Label info = createLabel("info", "LCSH v" + pm.version() + "  -  © Stephen X Chen", paneWidth * 0.7);
         info.setPrefHeight(paneHeight * 0.05);
         addChild(box, info);
         Button exit = new Button("close");
@@ -198,42 +201,6 @@ public class StatsStage extends Stage{
         });
         addChild(box, exit);
         return box;
-    }
-
-    static ImageView getImage(String type, String name, double width) {
-        if(name != null)
-            name = name.replaceAll("\\s", "")
-                    .replace("&#039;","")
-                    .replace(".","");
-        else
-            name = "default";
-        String url = type + "/" + name + ".png";
-        InputStream urlStream = StatsStage.class.getResourceAsStream(url);
-        Image img = null;
-        try {
-            img = new Image(urlStream);
-        } catch (Exception e) {
-            img = new Image(StatsStage.class.getResourceAsStream(type + "/" + "default.png"));
-        }
-        ImageView imgv = new ImageView(img);
-        imgv.setFitWidth(width);//size map
-        imgv.setPreserveRatio(true);
-        return imgv;
-    }
-
-    static Label createLabel(String content, double width) {
-        return createLabel("default", content, width);
-    }
-
-    static Label createLabel(String type, String content, double width) {
-        Label l = new Label(content);
-        l.setId(type);
-        l.setMinWidth(width);
-        return l;
-    }
-
-    static void addChild(Pane parent, Node child) {
-        parent.getChildren().add(child);
     }
 
     static class opggTask extends Task {

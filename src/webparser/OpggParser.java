@@ -1,3 +1,7 @@
+package webparser;
+
+import data.Player;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -21,7 +25,7 @@ public class OpggParser {
     static final String assistProp = "<span class=\"Assist\">";
     static final String victoryProp = "Victory";
 
-    static Player getPlayerInfo(String name) throws IOException {
+    public static Player getPlayerInfo(String name) throws IOException {
         Player p = new Player(name);
 
         URL opgg = new URL(getUrl(name));
@@ -67,7 +71,7 @@ public class OpggParser {
         return p;
     }
 
-    static String getUrl(String name) {
+    public static String getUrl(String name) {
         try {
             return opggUrl + URLEncoder.encode(name.replaceAll("\\s",""), "UTF8");
         } catch (UnsupportedEncodingException e) {

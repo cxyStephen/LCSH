@@ -16,10 +16,9 @@ public class Main extends Application {
     public void start(Stage dummy) {
         Platform.setImplicitExit(false);
 
-        PropertyManager pm = new PropertyManager(Language.EN, Region.NA);
-        Controller controller = new Controller(pm);
+        Controller controller = new Controller();
 
-        MainStage mainStage = new MainStage(pm);
+        MainStage mainStage = new MainStage();
         mainStage.setOnCloseRequest(event -> {
             SystemTray.getSystemTray().remove(mainStage.getTrayIcon());
             controller.exit();

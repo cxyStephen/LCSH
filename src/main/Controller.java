@@ -2,8 +2,8 @@ package main;
 
 import javafx.scene.input.Clipboard;
 import propertymanager.PropertyManager;
+import propertymanager.PropertyManager.Prop;
 import stage.StatsStage;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,14 +11,10 @@ import java.util.List;
 public class Controller {
 
     private PropertyManager pm;
-
-    private String joinedLobby;
     private StatsStage currentStats;
 
-    public Controller(PropertyManager pm) {
-        this.pm = pm;
-
-        joinedLobby = " joined the lobby"; //change this to be language dependent
+    public Controller() {
+        this.pm = PropertyManager.getPropertyManager();
         initListeners();
     }
 
@@ -35,12 +31,12 @@ public class Controller {
 
     private void processString(String s) {
 
-        if(!s.contains(joinedLobby))
+        if(!s.contains(pm.get(Prop.join)))
             return;
 
         List<String> players = new ArrayList<>();
         for(String line : s.split("\n")) {
-            int joinedIndex = line.indexOf(joinedLobby);
+            int joinedIndex = line.indexOf(pm.get(Prop.join));
             if(joinedIndex > 0)
                 players.add(line.substring(0, joinedIndex));
             if(players.size() > 5)
@@ -50,12 +46,8 @@ public class Controller {
         if(currentStats != null)
             currentStats.close();
 
-        currentStats = new StatsStage(pm, players);
+        currentStats = new StatsStage(players);
         currentStats.show();
-    }
-
-    void setLanguage(String str) {
-        throw new NotImplementedException();
     }
 
     public void exit(){

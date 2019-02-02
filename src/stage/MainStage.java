@@ -1,11 +1,12 @@
 package stage;
 
 import main.Util;
-import propertymanager.PropertyManager;
+import propertymanager.PropertyManager.Prop;
 
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
@@ -25,25 +26,24 @@ public class MainStage extends LCSHStage{
     double xOffset;
     double yOffset;
 
-    public MainStage(PropertyManager pm){
-        super(pm);
+    public MainStage(){
+        super();
         createTrayIcon();
-        getScene().getStylesheets().add("stylesheet.css");
     }
 
-    Scene initLayout() {
+    Scene initLayout() { //todo: clean this up
         BorderPane main = new BorderPane();
         main.setPrefWidth(300);
         main.setMaxWidth(300);
         main.setId("infoBox");
         HBox topBar = new HBox();
-        javafx.scene.control.Label title = new javafx.scene.control.Label("LCSH v" + pm.version());
+        Label title = new Label(pm.get(Prop.title) + " " + pm.version());
         title.setPrefSize(210, 40);
         title.setId("info");
-        javafx.scene.control.Button minimize = new javafx.scene.control.Button("-");
+        Button minimize = new Button("-");
         minimize.setPrefSize(45,40);
         minimize.setId("minButton");
-        javafx.scene.control.Button exit = new javafx.scene.control.Button("x");
+        Button exit = new Button("x");
         exit.setPrefSize(45,40);
         exit.setId("closeButton");
         topBar.getChildren().addAll(title, minimize, exit);
@@ -73,15 +73,11 @@ public class MainStage extends LCSHStage{
             setY(event.getScreenY() + yOffset);
         });
 
-        javafx.scene.control.Label info = new javafx.scene.control.Label(
-                "Leave this window open or minimized and copy the join messages in champion select.\n\n" +
-                        "Make sure you get the summoner name and \"joined the lobby\"\n\n" +
-                        "e.g:\n\tŚtephen joined the lobby\n\tBCKC joined the lobby\n\tTheorize joined the lobby\n"
-        );
+        Label info = new Label(pm.get(Prop.info));
         info.setId("infoText");
         info.setWrapText(true);
 
-        javafx.scene.control.Label bottom = new Label("© Stephen X Chen (cxystephen.com)");
+        Label bottom = new Label(String.format("%s (%s)", pm.get(Prop.copyright), pm.get(Prop.website)));
         bottom.setId("default");
         bottom.setStyle(bottom.getStyle() + "-fx-padding: 15;");
 
@@ -96,10 +92,10 @@ public class MainStage extends LCSHStage{
             return;
 
         SystemTray tray = SystemTray.getSystemTray();
-        Image fximg = new Image(Util.getResource("iconsmall.png"));
+        Image fximg = new Image(Util.getResource(pm.get(Prop.icon_small)));
         BufferedImage img = SwingFXUtils.fromFXImage(fximg, null);
 
-        trayIcon = new TrayIcon(img, "LCSH");
+        trayIcon = new TrayIcon(img, pm.get(Prop.title));
         trayIcon.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {

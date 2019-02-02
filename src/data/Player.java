@@ -1,9 +1,17 @@
 package data;
 
-import java.util.*;
+import propertymanager.PropertyManager;
+import propertymanager.PropertyManager.Prop;
+
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Player {
+
+    PropertyManager pm;
 
     private String name;
 
@@ -25,6 +33,8 @@ public class Player {
     private double recentAssists;
 
     public Player(String name) {
+        pm = PropertyManager.getPropertyManager();
+
         this.name = name;
         recentChamps = new LinkedHashMap<>();
         recentChampStats = new LinkedHashMap<>();
@@ -112,7 +122,7 @@ public class Player {
         String[] games = s.split(" ");
         int wins = Integer.parseInt(games[0].substring(0, games[0].indexOf("W")));
         int losses = Integer.parseInt(games[1].substring(0, games[1].indexOf("L")));
-        String g = (wins + losses) == 1 ? "game" : "games";
+        String g = (wins + losses) == 1 ? pm.get(Prop.game) : pm.get(Prop.games);
         return (wins+losses) + " " + g + "\n(" + games[4] + "WR)";
     }
 
@@ -176,7 +186,7 @@ public class Player {
             int wins = recentChampStats.get(champ).get("wins")[0];
             int losses = recentChampStats.get(champ).get("losses")[0];
             int numGames = topTwo.get(champ);
-            String games = (numGames == 1) ? "game" : "games";
+            String games = (numGames == 1) ? pm.get(Prop.game) : pm.get(Prop.games);
             String statsString = numGames + " " + games + " (" + wins + "W-" + losses + "L)\n";
 
             int kills = recentChampStats.get(champ).get("kills")[0];
@@ -192,8 +202,8 @@ public class Player {
     public String getStreakString() {
         if(numRecentLosses + numRecentWins == 0)
             return "";
-        String type = winStreak ? "win" : "loss";
-        return streak + " game " + type + " streak";
+        String type = winStreak ? pm.get(Prop.win) : pm.get(Prop.loss);
+        return String.format(pm.get(Prop.streak), streak, type);
     }
 
     public boolean isWinStreak() {

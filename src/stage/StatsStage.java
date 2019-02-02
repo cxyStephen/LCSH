@@ -2,7 +2,6 @@ package stage;
 
 import data.Player;
 import main.Util;
-import propertymanager.PropertyManager;
 import webparser.OpggParser;
 
 import javafx.application.Platform;
@@ -28,6 +27,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static propertymanager.PropertyManager.Prop;
+
 public class StatsStage extends LCSHStage{
 
     private static Map<String, HBox> playerHBoxes;
@@ -35,8 +36,8 @@ public class StatsStage extends LCSHStage{
     private static double paneHeight;
     private List<String> playerNames;
 
-    public StatsStage(PropertyManager pm, List<String> playerNames) {
-        super(pm);
+    public StatsStage(List<String> playerNames) {
+        super();
         setAlwaysOnTop(true);
 
         playerHBoxes = new HashMap<>();
@@ -98,7 +99,7 @@ public class StatsStage extends LCSHStage{
         HBox playerBox = new HBox(3);
         playerBox.setPrefHeight(paneHeight * .18);
         playerBox.setPrefWidth(paneWidth);
-        Label loading = createLabel("loading", "loading " + name +"...", paneWidth);
+        Label loading = createLabel("loading", pm.get(Prop.loading) + " " + name + "...", paneWidth);
         loading.setPrefHeight(playerBox.getPrefHeight());
         addChild(playerBox, loading);
         playerHBoxes.put(name, playerBox);
@@ -125,7 +126,7 @@ public class StatsStage extends LCSHStage{
 
             VBox overallBox = new VBox(5);
             overallBox.setPrefWidth((paneWidth-rankBox.getPrefWidth()) * 0.4);
-            addChild(overallBox, createLabel("title","This season:", 0));
+            addChild(overallBox, createLabel("title", pm.get(Prop.season_stats), 0));
             String[][] overallStats = p.getOverallChampions();
             for (int i = 0; i < overallStats[0].length; i++)
                 addChild(overallBox, championBox(overallStats[0][i], overallStats[1][i]));
@@ -134,14 +135,14 @@ public class StatsStage extends LCSHStage{
             recentBox.setPrefWidth(paneWidth-rankBox.getPrefWidth() - overallBox.getPrefWidth());
             String recentTitle;
             switch (p.getNumRecent()) {
-                case 0: recentTitle = "No recent games.";
+                case 0: recentTitle = pm.get(Prop.no_games);
                         break;
-                case 1: recentTitle = "Last game: " + (p.isWinStreak() ? "W" : "L");
+                case 1: recentTitle = pm.get(Prop.last_game) + " " + (p.isWinStreak() ? "W" : "L");
                         break;
-                default: recentTitle = "Past " + p.getNumRecent() + " games: " + p.getRecentWLString();
+                default: recentTitle = String.format(pm.get(Prop.past_games), p.getNumRecent()) + " " + p.getRecentWLString();
             }
             addChild(recentBox, createLabel("title",recentTitle,0));
-            String streakType = p.isWinStreak() ? "win" : "loss";
+            String streakType = p.isWinStreak() ? pm.get(Prop.win) : pm.get(Prop.loss);
             addChild(recentBox, createLabel(streakType, p.getStreakString(),0));
             addChild(recentBox, createLabel(p.getKdaString(),0));
             LinkedHashMap<String, String> recents = p.getRecentChampions();
@@ -189,10 +190,11 @@ public class StatsStage extends LCSHStage{
 
      Node bottomBox(){
         HBox box = new HBox();
-        Label info = createLabel("info", "LCSH v" + pm.version() + "  -  © Stephen X Chen", paneWidth * 0.7);
+        String bottomText = pm.get(Prop.title) + " " + pm.version() + "  -  " + pm.get(Prop.copyright);
+        Label info = createLabel("info", bottomText, paneWidth * 0.7);
         info.setPrefHeight(paneHeight * 0.05);
         addChild(box, info);
-        Button exit = new Button("close");
+        Button exit = new Button(pm.get(Prop.close));
         exit.setId("closeButton");
         exit.setPrefWidth(paneWidth * 0.3);
         exit.setPrefHeight(paneHeight * 0.05);

@@ -1,0 +1,28 @@
+{
+  "title" : "LCSH",
+  "major_version" : "0",
+  "minor_version" : "4",
+  "patch_version" : "1",
+  "stylesheet" : "stylesheet.css",
+  "icon" : "icon.png",
+  "icon_small" : "iconsmall.png",
+  "copyright" : "© Stephen X Chen",
+  "website" : "cxystephen.com",
+
+  "join" : "joined the lobby",
+
+  "info" : "Leave this window open or minimized and copy the join messages in champion select.\n\nMake sure you get the summoner name and \"joined the lobby\"\n\ne.g:\n\tŚtephen joined the lobby\n\tBCKC joined the lobby\n\tTheorize joined the lobby\n",
+  "loading" : "loading",
+  "season_stats" : "This season:",
+  "game" : "game",
+  "games" : "games",
+  "no_games" : "No recent games.",
+  "last_game" : "Last game:",
+  "past_games" : "Past %d games:",
+  "win" : "win",
+  "loss" : "loss",
+  "streak" : "%d game %s streak",
+  "close" : "close",
+
+  "opgg_url" : "http://%s.op.gg/summoner/userName="
+}

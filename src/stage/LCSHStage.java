@@ -1,35 +1,35 @@
 package stage;
 
+import main.Util;
+import propertymanager.PropertyManager;
+import propertymanager.PropertyManager.Prop;
+
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
-import main.Util;
-
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import propertymanager.PropertyManager;
 
 public abstract class LCSHStage extends Stage {
 
-    PropertyManager pm;
+    static PropertyManager pm;
 
-    public LCSHStage(PropertyManager pm) {
+    public LCSHStage() {
         super();
-        this.pm = pm;
+        this.pm = PropertyManager.getPropertyManager();
 
         initStyle(StageStyle.TRANSPARENT);
-        getIcons().add(new Image(Util.getResource("icon.png")));
-        setTitle("LCSH v" + pm.version());
+        getIcons().add(new Image(Util.getResource(pm.get(Prop.icon))));
+        setTitle(pm.get(Prop.title) + " " + pm.version());
 
         Scene scene = initLayout();
-        scene.getStylesheets().add("stylesheet.css");
+        scene.getStylesheets().add(pm.get(Prop.stylesheet));
         setScene(scene);
     }
 
     abstract Scene initLayout();
-
 
     static Label createLabel(String content, double width) {
         return createLabel("default", content, width);

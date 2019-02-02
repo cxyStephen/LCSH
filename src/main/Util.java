@@ -3,12 +3,24 @@ package main;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.io.InputStream;
+import java.io.*;
 
 public class Util {
 
     public static InputStream getResource(String path) {
         return ClassLoader.getSystemResourceAsStream(path);
+    }
+
+    public static String readFile(String path) throws IOException {
+        InputStream in = getResource(path);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+        StringBuilder out = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            out.append(line);
+        }
+        reader.close();
+        return out.toString();
     }
 
     public static ImageView getImage(String type, String name, double width) {

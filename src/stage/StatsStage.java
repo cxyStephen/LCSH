@@ -1,5 +1,6 @@
 package stage;
 
+import data.Champion;
 import data.Player;
 import main.Util;
 import webparser.OpggParser;
@@ -127,9 +128,9 @@ public class StatsStage extends LCSHStage{
             VBox overallBox = new VBox(5);
             overallBox.setPrefWidth((paneWidth-rankBox.getPrefWidth()) * 0.4);
             addChild(overallBox, createLabel("title", pm.get(Prop.season_stats), 0));
-            String[][] overallStats = p.getOverallChampions();
-            for (int i = 0; i < overallStats[0].length; i++)
-                addChild(overallBox, championBox(overallStats[0][i], overallStats[1][i]));
+            Champion[] overallStats = p.getSeasonChamps();
+            for (Champion c : overallStats)
+                addChild(overallBox, championBox(c, false));
 
             VBox recentBox = new VBox(5);
             recentBox.setPrefWidth(paneWidth-rankBox.getPrefWidth() - overallBox.getPrefWidth());
@@ -145,16 +146,15 @@ public class StatsStage extends LCSHStage{
             String streakType = p.isWinStreak() ? pm.get(Prop.win) : pm.get(Prop.loss);
             addChild(recentBox, createLabel(streakType, p.getStreakString(),0));
             addChild(recentBox, createLabel(p.getKdaString(),0));
-            LinkedHashMap<String, String> recents = p.getRecentChampions();
-            for (String champ : recents.keySet())
-                addChild(recentBox, championBox(champ, recents.get(champ)));
+            Champion[] recents = p.getRecentChamps();
+            for (Champion c : recents)
+                addChild(recentBox, championBox(c, true));
 
             addChild(statsBox, overallBox);
             addChild(statsBox, recentBox);
 
             addChild(playerBox, rankBox);
             addChild(playerBox, infoBox);
-            //return playerBox;
         });
     }
 
@@ -163,7 +163,7 @@ public class StatsStage extends LCSHStage{
         btn.setId("playerButton");
         btn.setOnAction(e->{
             try {
-                Desktop.getDesktop().browse(new URI(OpggParser.getUrl(name)));
+                Desktop.getDesktop().browse(new URI(OpggParser.getOpggUrl(name)));
             } catch (Exception ex) {
                 ex.printStackTrace();//TODO
             }
@@ -171,19 +171,28 @@ public class StatsStage extends LCSHStage{
         return btn;
     }
 
-    static Node championBox(String champ, String stats) {
+    static Node championBox(Champion champ, boolean detailed) {
         HBox championBox = new HBox(5);
-        addChild(championBox, Util.getImage("champ", champ, 40));
+        String name = (champ != null) ? champ.name() : "null";
+        addChild(championBox, Util.getImage("champ", name, 40));
 
-        if(stats == null)
+        if(champ == null)
             return championBox;
 
         VBox statBox = new VBox();
-        String[] s = stats.split("\n");
-        if(s.length == 2) {
-            addChild(statBox, createLabel(s[0], 0));
-            addChild(statBox, createLabel("smaller", s[1], 0));
+        String[] stats = new String[2];
+
+        String g = (champ.games()) == 1 ? pm.get(Prop.game) : pm.get(Prop.games);
+        if(!detailed) {
+            stats[0] = champ.games() + " " + g;
+            stats[1] = "(" + champ.wr() + "%WR)";
+        } else {
+            stats[0] = champ.games() + " " + g + " (" + champ.winLoss() + ")";
+            stats[1] = champ.kda() + " KDA (" + champ.avgKda() + ")";
         }
+
+        addChild(statBox, createLabel(stats[0], 0));
+        addChild(statBox, createLabel("smaller", stats[1], 0));
         addChild(championBox, statBox);
         return championBox;
     }

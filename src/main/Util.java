@@ -11,6 +11,37 @@ public class Util {
         return ClassLoader.getSystemResourceAsStream(path);
     }
 
+    public static double kda(int k, int d, int a){
+        return (d != 0) ? ((k+a)/(double)d) : -1;
+    }
+
+    public static double kda(int k, int d, int a, int decimals){
+        double kda = kda(k, d, a);
+        double factor = Math.pow(10, decimals);
+        return (Math.round(kda * factor) / factor);
+    }
+
+    public static String kdaString(int k, int d, int a, int decimals) {
+        double kda = kda(k, d, a, decimals);
+        if(kda == -1)
+            return "∞";
+        String s = "" + kda;
+        while(s.substring(s.indexOf(".")+1).length() < decimals)
+            s+="0";
+        return s;
+    }
+
+    public static String avgKda(int k, int d, int a, int games, int decimals) {
+        if(games == 0)
+            return "0/0/0";
+
+        double factor = Math.pow(10, decimals);
+        double kpg = Math.round((factor * k)/games) / factor;
+        double dpg = Math.round((factor * d)/games) / factor;
+        double apg = Math.round((factor * a)/games) / factor;
+        return kpg + "/" + dpg + "/" + apg;
+    }
+
     public static String readFile(String path) throws IOException {
         InputStream in = getResource(path);
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));

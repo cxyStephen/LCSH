@@ -62,6 +62,10 @@ public class PropertyManager {
                 get(Prop.patch_version));
     }
 
+    public String opggUrl() {
+        return String.format(get(Prop.opgg_url), region.name().toLowerCase());
+    }
+
     public enum Prop {
         title,
         major_version,

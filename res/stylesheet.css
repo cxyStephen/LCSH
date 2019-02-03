@@ -93,6 +93,12 @@
     -fx-text-fill: white;
 }
 
+#Iron {
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-text-fill: rgb(83, 92, 92);
+}
+
 #Bronze {
     -fx-font-weight: bold;
     -fx-alignment: center;
@@ -124,6 +130,12 @@
 }
 
 #Master {
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-text-fill: #fa576f;
+}
+
+#Grandmaster {
     -fx-font-weight: bold;
     -fx-alignment: center;
     -fx-text-fill: #fa576f;

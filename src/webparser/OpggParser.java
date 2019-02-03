@@ -36,6 +36,7 @@ public class OpggParser {
     static void getRankInfo(Player p, Document doc) {
         //display hierarchy: solo > flex > previous season > unranked
         Elements info = doc.select("div.TierRankInfo");
+        Element position = info.select("div.Position").first();
         String queueType = info.select("div.RankType").text();
         String rank = info.select("div.TierRank").text();
         String lp = info.select("span.LeaguePoints").text();
@@ -45,8 +46,14 @@ public class OpggParser {
         //if unranked in soloq, check flex rank
         if(rank.equals("Unranked") || rank.isEmpty())
             getFlexRankInfo(p, doc);
-        else
+        else {
+            if(position != null) {
+                String pos = position.text();
+                pos = pos.substring(0, pos.indexOf(" "));
+                p.setMainPosition(pos);
+            }
             setPlayerInfo(p, queueType, rank, lp, wins, losses);
+        }
     }
 
     static void getFlexRankInfo(Player p, Document doc) {

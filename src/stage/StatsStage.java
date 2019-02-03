@@ -127,7 +127,7 @@ public class StatsStage extends LCSHStage{
 
             VBox overallBox = new VBox(5);
             overallBox.setPrefWidth((paneWidth-rankBox.getPrefWidth()) * 0.4);
-            addChild(overallBox, createLabel("title", pm.get(Prop.season_stats), 0));
+            addChild(overallBox, createLabel("title", p.getSeasonTitle(), 0));
             Champion[] overallStats = p.getSeasonChamps();
             for (Champion c : overallStats)
                 addChild(overallBox, championBox(c, false));

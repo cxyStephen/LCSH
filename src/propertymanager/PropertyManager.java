@@ -80,6 +80,7 @@ public class PropertyManager {
         info,
         loading,
         season_stats,
+        prev_season,
         game,
         games,
         no_games,

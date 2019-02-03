@@ -6,13 +6,15 @@ import propertymanager.PropertyManager.Prop;
 
 public class Player {
 
-    PropertyManager pm;
+    private PropertyManager pm;
 
-    String name;
+    private String name;
 
-    private String queueType;
-    private String rank;
+    private String queueType = "";
+    private String rank = "";
     private int lp = -1;
+
+    private String mainPosition = "";
 
     private int wins = 0;
     private int losses = 0;
@@ -71,6 +73,10 @@ public class Player {
         this.isWinStreak = isWinStreak;
     }
 
+    public void setMainPosition(String pos) {
+        mainPosition = pos;
+    }
+
     public void addRecentK(int n) {
         recentK += n;
     }
@@ -97,13 +103,43 @@ public class Player {
     }
 
     public String getRankString() {
-        return rank + " - " + lp + "LP";
+        switch (queueType) {
+            case "Ranked Solo" :
+            case "Flex 5:5" :
+            case "Flex 3:3" :
+                return rank + " - " + lp + "LP";
+            case "Unranked":
+                return rank;
+            default:
+                return "(" + queueType + ") " + rank;
+        }
     }
 
     public String getOverallWinLoss() {
+        String line1;
+        String line2;
+
         int totalGames = wins+losses;
         String g = (totalGames) == 1 ? pm.get(Prop.game) : pm.get(Prop.games);
-        return (totalGames) + " " + g + "\n(" + Math.round(100*wins/totalGames) + "%WR)";
+        String wr = "" + Math.round(100 * wins / totalGames);
+
+        if(queueType.toLowerCase().contains("solo")) {
+            if(!mainPosition.isEmpty()) {
+                line1 = (totalGames) + " " + g + " " + "(" + wr + "%)";
+                line2 = mainPosition;
+            } else {
+                line1 = (totalGames) + " " + g;
+                line2 = "(" + wr + "%WR)";
+            }
+        } else if (queueType.toLowerCase().contains("flex")){
+            line1 = (totalGames) + " " + g + " " + "(" + wr + "%)";
+            line2 = queueType.toUpperCase().replace(":", "v");
+        } else {
+            line1 = "Unranked";
+            line2 = "";
+        }
+
+        return line1 + "\n" + line2;
     }
 
     public String getName() {
@@ -127,13 +163,25 @@ public class Player {
     }
 
     public String getStreakString() {
+        if(streak == 0)
+            return "";
+
         String streakType = isWinStreak ? pm.get(Prop.win) : pm.get(Prop.loss);
         return String.format(pm.get(Prop.streak), streak, streakType);
     }
 
     public String getKdaString(){
+        if(recentLosses + recentLosses == 0)
+            return "";
+
         return Util.kdaString(recentK, recentD, recentA, 2) + " KDA (" +
                 Util.avgKda(recentK, recentD, recentA, recentWins + recentLosses, 1) + ")";
+    }
+
+    public String getSeasonTitle() {
+        if(queueType.toLowerCase().contains("rank") || queueType.toLowerCase().contains("flex"))
+            return pm.get(Prop.season_stats);
+        return pm.get(Prop.prev_season);
     }
 
     public Champion[] getSeasonChamps(){

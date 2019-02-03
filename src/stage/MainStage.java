@@ -39,7 +39,7 @@ public class MainStage extends LCSHStage{
         HBox topBar = new HBox();
         Label title = new Label(pm.get(Prop.title) + " " + pm.version());
         title.setPrefSize(210, 40);
-        title.setId("info");
+        title.getStyleClass().add("info");
         Button minimize = new Button("-");
         minimize.setPrefSize(45,40);
         minimize.setId("minButton");
@@ -78,7 +78,7 @@ public class MainStage extends LCSHStage{
         info.setWrapText(true);
 
         Label bottom = new Label(String.format("%s (%s)", pm.get(Prop.copyright), pm.get(Prop.website)));
-        bottom.setId("default");
+        bottom.getStyleClass().add("default");
         bottom.setStyle(bottom.getStyle() + "-fx-padding: 15;");
 
         main.setCenter(info);

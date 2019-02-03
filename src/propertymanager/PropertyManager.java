@@ -84,6 +84,7 @@ public class PropertyManager {
         game,
         games,
         no_games,
+        no_streak,
         last_game,
         past_games,
         close,

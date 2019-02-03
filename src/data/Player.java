@@ -164,7 +164,7 @@ public class Player {
 
     public String getStreakString() {
         if(streak == 0)
-            return "";
+            return pm.get(Prop.no_streak);
 
         String streakType = isWinStreak ? pm.get(Prop.win) : pm.get(Prop.loss);
         return String.format(pm.get(Prop.streak), streak, streakType);

@@ -114,7 +114,7 @@ public class StatsStage extends LCSHStage{
             VBox rankBox = new VBox();
             rankBox.setPrefWidth(paneWidth * 0.3);
             addChild(rankBox, Util.getImage("rank", p.getRank(), rankBox.getPrefWidth()));
-            addChild(rankBox, createLabel(p.getRank(), p.getRankString(), rankBox.getPrefWidth()));
+            addChild(rankBox, createLabel(new String[]{"rank", p.getRank()}, p.getRankString(), rankBox.getPrefWidth()));
             addChild(rankBox, createLabel(p.getOverallWinLoss(), rankBox.getPrefWidth()));
 
             VBox infoBox = new VBox();

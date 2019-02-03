@@ -3,32 +3,32 @@
     -fx-padding: 8 0 0 0;
 }
 
-#title {
+.title {
     -fx-font-weight: bold;
     -fx-text-fill: white;
 }
 
-#default {
+.default {
     -fx-text-fill: white;
     -fx-alignment: center;
     -fx-font-size: 12;
     -fx-text-alignment: center;
 }
 
-#smaller {
+.smaller {
     -fx-text-fill: white;
     -fx-alignment: center;
     -fx-font-size: 11;
 }
 
-#loading {
+.loading {
     -fx-text-fill: white;
     -fx-alignment: center;
     -fx-font-size: 18;
     -fx-font-style: italic;
 }
 
-#info {
+.info {
     -fx-background-color: rgb(18,18,18);
     -fx-text-fill: white;
     -fx-font-size: 18;
@@ -72,12 +72,12 @@
     -fx-background-color: #363636;
 }
 
-#win{
+.win{
     -fx-text-fill: #d2ffd2;
     -fx-font-size: 12;
 }
 
-#loss{
+.loss{
     -fx-text-fill: #ffd2d2;
     -fx-font-size: 12;
 }
@@ -87,63 +87,48 @@
     -fx-opacity: .25;
 }
 
-#Level {
+.rank {
     -fx-font-weight: bold;
     -fx-alignment: center;
+}
+
+.Level {
     -fx-text-fill: white;
 }
 
-#Iron {
-    -fx-font-weight: bold;
-    -fx-alignment: center;
+.Iron {
     -fx-text-fill: rgb(83, 92, 92);
 }
 
-#Bronze {
-    -fx-font-weight: bold;
-    -fx-alignment: center;
+.Bronze {
     -fx-text-fill: rgb(106, 91, 63);
 }
 
-#Silver {
-    -fx-font-weight: bold;
-    -fx-alignment: center;
+.Silver {
     -fx-text-fill: #9ea3b0;
 }
 
-#Gold {
-    -fx-font-weight: bold;
-    -fx-alignment: center;
+.Gold {
     -fx-text-fill: #fabc44;
 }
 
-#Platinum {
-    -fx-font-weight: bold;
-    -fx-alignment: center;
+.Platinum {
     -fx-text-fill: #04b1a1;
 }
 
-#Diamond {
-    -fx-font-weight: bold;
-    -fx-alignment: center;
+.Diamond {
     -fx-text-fill: #048ab4;
 }
 
-#Master {
-    -fx-font-weight: bold;
-    -fx-alignment: center;
-    -fx-text-fill: #fa576f;
+.Master {
+    -fx-text-fill: #f23ef8;
 }
 
-#Grandmaster {
-    -fx-font-weight: bold;
-    -fx-alignment: center;
-    -fx-text-fill: #fa576f;
+.Grandmaster {
+    -fx-text-fill: #fd4d46;
 }
 
-#Challenger {
-    -fx-font-weight: bold;
-    -fx-alignment: center;
+.Challenger {
     -fx-text-fill: #fa576f;
 }
 

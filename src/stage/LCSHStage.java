@@ -36,8 +36,12 @@ public abstract class LCSHStage extends Stage {
     }
 
     static Label createLabel(String type, String content, double width) {
+        return createLabel(new String[]{type}, content, width);
+    }
+
+    static Label createLabel(String[] type, String content, double width) {
         Label l = new Label(content);
-        l.setId(type);
+        l.getStyleClass().addAll(type);
         l.setMinWidth(width);
         return l;
     }

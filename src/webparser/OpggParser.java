@@ -29,6 +29,7 @@ public class OpggParser {
         getRankInfo(p, doc);
         getChampInfo(p, doc);
         getRecentInfo(p, doc);
+        getRecentTeammates(p,doc);
 
         return p;
     }
@@ -205,6 +206,15 @@ public class OpggParser {
             recent[i] = champSet.pollLast();
 
         p.setRecentChamps(recent);
+    }
+
+    public static void getRecentTeammates(Player p, Document doc){
+        Element info = doc.select("div.SummonersMostGame.Box").first();
+        if(info != null) {
+            Elements teammates = info.select("td.SummonerName.Cell");
+            for (Element e : teammates)
+                p.addTeammate(e.text());
+        }
     }
 
     public static String getOpggUrl(String name) {

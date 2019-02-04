@@ -38,7 +38,7 @@ public class Controller {
         for(String line : s.split("\n")) {
             int joinedIndex = line.indexOf(pm.get(Prop.join));
             if(joinedIndex > 0)
-                players.add(line.substring(0, joinedIndex));
+                players.add(line.substring(0, joinedIndex).trim());
             if(players.size() > 5)
                 break;
         }

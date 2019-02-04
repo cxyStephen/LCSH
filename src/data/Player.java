@@ -4,6 +4,9 @@ import main.Util;
 import propertymanager.PropertyManager;
 import propertymanager.PropertyManager.Prop;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Player {
 
     private PropertyManager pm;
@@ -31,6 +34,8 @@ public class Player {
 
     private Champion[] seasonChamps;
     private Champion[] recentChamps;
+
+    private List<String> recentTeammates = new ArrayList<>();
 
     public Player(String name) {
         pm = PropertyManager.getPropertyManager();
@@ -94,6 +99,10 @@ public class Player {
             recentWins++;
         else
             recentLosses++;
+    }
+
+    public void addTeammate(String name) {
+        recentTeammates.add(name);
     }
 
     public String getRank() {
@@ -190,5 +199,9 @@ public class Player {
 
     public Champion[] getRecentChamps() {
         return recentChamps;
+    }
+
+    public List<String> getRecentTeammates() {
+        return recentTeammates;
     }
 }

@@ -21,6 +21,10 @@
     -fx-font-size: 11;
 }
 
+.align-right {
+    -fx-text-alignment: right;
+}
+
 .loading {
     -fx-text-fill: white;
     -fx-alignment: center;
@@ -87,6 +91,10 @@
     -fx-opacity: .25;
 }
 
+.light {
+    -fx-text-fill: #9ea3b0;
+}
+
 .rank {
     -fx-font-weight: bold;
     -fx-alignment: center;
@@ -97,15 +105,15 @@
 }
 
 .Iron {
-    -fx-text-fill: rgb(83, 92, 92);
+    -fx-text-fill: #7c716f;
 }
 
 .Bronze {
-    -fx-text-fill: rgb(106, 91, 63);
+    -fx-text-fill: #b77651;
 }
 
 .Silver {
-    -fx-text-fill: #9ea3b0;
+    -fx-text-fill: #869da4;
 }
 
 .Gold {

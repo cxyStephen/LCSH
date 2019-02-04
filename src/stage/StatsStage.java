@@ -2,6 +2,9 @@ package stage;
 
 import data.Champion;
 import data.Player;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.layout.*;
 import main.Util;
 import webparser.OpggParser;
 
@@ -14,9 +17,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 
@@ -24,18 +24,19 @@ import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
-import static propertymanager.PropertyManager.Prop;
+import propertymanager.PropertyManager.Prop;
 
 public class StatsStage extends LCSHStage{
 
     private static Map<String, HBox> playerHBoxes;
     private static double paneWidth;
     private static double paneHeight;
-    private List<String> playerNames;
+    private static List<String> playerNames;
 
     public StatsStage(List<String> playerNames) {
         super();
@@ -119,7 +120,13 @@ public class StatsStage extends LCSHStage{
 
             VBox infoBox = new VBox();
             infoBox.setFillWidth(true);
-            addChild(infoBox, playerButton(p.getName()));
+            BorderPane nameBox = new BorderPane();
+            nameBox.setPadding(new Insets(0, 25, 0, 0));
+            nameBox.setLeft(playerButton(p.getName()));
+            Label recentTeammates = recentTeammates(p);
+            nameBox.setRight(recentTeammates);
+            BorderPane.setAlignment(recentTeammates, Pos.CENTER_RIGHT);
+            addChild(infoBox, nameBox);
 
             HBox statsBox = new HBox(3);
             statsBox.setFillHeight(true);
@@ -169,6 +176,20 @@ public class StatsStage extends LCSHStage{
             }
         });
         return btn;
+    }
+
+    static Label recentTeammates(Player p) {
+        Set<Integer> teammates = new TreeSet<>();
+        for(String teammate : p.getRecentTeammates()) {
+            if(playerNames.contains(teammate))
+                teammates.add(playerNames.indexOf(teammate) + 1);
+        }
+
+        String queuedWith = "";
+        if(!teammates.isEmpty())
+            queuedWith = pm.get(Prop.queued_with) + " " + teammates.toString();
+
+        return createLabel(new String[]{"smaller","light"}, queuedWith, 1);
     }
 
     static Node championBox(Champion champ, boolean detailed) {

@@ -16,6 +16,8 @@ public class PropertyManager {
     private Language language;
     private Region region;
 
+    private String os;
+
     private Map<String, String> props;
 
     public static PropertyManager getPropertyManager() {
@@ -51,8 +53,16 @@ public class PropertyManager {
         region = r;
     }
 
+    public void setOs(String os) {
+        this.os = os;
+    }
+
     public String get(Prop key) {
         return props.get(key.name());
+    }
+
+    public String getOs() {
+        return os;
     }
 
     public String version() {

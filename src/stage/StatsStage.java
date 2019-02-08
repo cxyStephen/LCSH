@@ -33,10 +33,10 @@ import propertymanager.PropertyManager.Prop;
 
 public class StatsStage extends LCSHStage{
 
-    private static Map<String, HBox> playerHBoxes;
-    private static double paneWidth;
-    private static double paneHeight;
-    private static List<String> playerNames;
+    private Map<String, HBox> playerHBoxes;
+    private double paneWidth;
+    private double paneHeight;
+    private List<String> playerNames;
 
     public StatsStage(List<String> playerNames) {
         super();
@@ -89,7 +89,7 @@ public class StatsStage extends LCSHStage{
         grid.add(bottomBox(), 0, 9);
     }
 
-    private Node emptyBox() {
+    Node emptyBox() {
         VBox out = new VBox();
         out.setFillWidth(true);
         out.setPrefHeight(paneHeight * .18);
@@ -97,7 +97,7 @@ public class StatsStage extends LCSHStage{
         return out;
     }
 
-    private Node playerBox(String name) {
+    Node playerBox(String name) {
         HBox playerBox = new HBox(3);
         playerBox.setPrefHeight(paneHeight * .18);
         playerBox.setPrefWidth(paneWidth);
@@ -108,7 +108,7 @@ public class StatsStage extends LCSHStage{
         return playerBox;
     }
 
-    static void populatePlayerBox(HBox playerBox, Player p) {
+    private void populatePlayerBox(HBox playerBox, Player p) {
         Platform.runLater(() -> {
             playerBox.getChildren().clear();
 
@@ -165,7 +165,7 @@ public class StatsStage extends LCSHStage{
         });
     }
 
-    static Button playerButton(String name) {
+    Button playerButton(String name) {
         Button btn = new Button(name);
         btn.setId("playerButton");
         btn.setOnAction(e->{
@@ -178,7 +178,7 @@ public class StatsStage extends LCSHStage{
         return btn;
     }
 
-    static Label recentTeammates(Player p) {
+    Label recentTeammates(Player p) {
         Set<Integer> teammates = new TreeSet<>();
         for(String teammate : p.getRecentTeammates()) {
             if(playerNames.contains(teammate))
@@ -192,7 +192,7 @@ public class StatsStage extends LCSHStage{
         return createLabel(new String[]{"smaller","light"}, queuedWith, 1);
     }
 
-    static Node championBox(Champion champ, boolean detailed) {
+    Node championBox(Champion champ, boolean detailed) {
         HBox championBox = new HBox(5);
         String name = (champ != null) ? champ.name() : "null";
         addChild(championBox, Util.getImage("champ", name, 40));
@@ -235,7 +235,7 @@ public class StatsStage extends LCSHStage{
         return box;
     }
 
-    static class opggTask extends Task {
+    class opggTask extends Task {
         private final String name;
 
         public opggTask(String name) {

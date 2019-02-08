@@ -108,7 +108,7 @@ public class OpggParser {
 
         p.setQueueType(queueType);
         p.setRank(rank);
-        p.setLp(Integer.parseInt(lp.substring(0,lp.indexOf(" LP"))));
+        p.setLp(Integer.parseInt(lp.substring(0,lp.indexOf(" LP")).replace(",","")));
         p.setWins(Integer.parseInt(wins.substring(0,wins.indexOf("W"))));
         p.setLosses(Integer.parseInt(losses.substring(0,losses.indexOf("L"))));
     }

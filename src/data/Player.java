@@ -37,6 +37,10 @@ public class Player {
 
     private List<String> recentTeammates = new ArrayList<>();
 
+    private Champion currChamp;
+    private String summoner1;
+    private String summoner2;
+
     public Player(String name) {
         pm = PropertyManager.getPropertyManager();
         this.name = name.trim();

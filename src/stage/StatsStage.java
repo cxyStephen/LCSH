@@ -34,8 +34,8 @@ import propertymanager.PropertyManager.Prop;
 public class StatsStage extends LCSHStage{
 
     private Map<String, HBox> playerHBoxes;
-    private double paneWidth;
-    private double paneHeight;
+    double paneWidth;
+    double paneHeight;
     private List<String> playerNames;
 
     public StatsStage(List<String> playerNames) {
@@ -233,6 +233,10 @@ public class StatsStage extends LCSHStage{
         });
         addChild(box, exit);
         return box;
+    }
+
+    public List<String> getPlayerNames() {
+        return playerNames;
     }
 
     class opggTask extends Task {

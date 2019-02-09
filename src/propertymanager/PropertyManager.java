@@ -76,6 +76,10 @@ public class PropertyManager {
         return String.format(get(Prop.opgg_url), region.name().toLowerCase());
     }
 
+    public String lolskillUrl() {
+        return String.format(get(Prop.lolskill_url), region.name().toLowerCase());
+    }
+
     public enum Prop {
         title,
         major_version,
@@ -102,6 +106,7 @@ public class PropertyManager {
         win,
         loss,
         streak,
-        opgg_url
+        opgg_url,
+        lolskill_url
     }
 }

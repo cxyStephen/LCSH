@@ -1,8 +1,8 @@
 {
   "title" : "LCSH",
   "major_version" : "0",
-  "minor_version" : "6",
-  "patch_version" : "4",
+  "minor_version" : "7",
+  "patch_version" : "0",
   "stylesheet" : "stylesheet.css",
   "icon" : "icon.png",
   "icon_small" : "iconsmall.png",
@@ -27,5 +27,6 @@
   "streak" : "%d game %s streak",
   "close" : "close",
 
-  "opgg_url" : "http://%s.op.gg/summoner/userName="
+  "opgg_url" : "http://%s.op.gg/summoner/userName=",
+  "lolskill_url" : "http://www.lolskill.net/game/%s/"
 }

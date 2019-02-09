@@ -76,6 +76,10 @@ public class PropertyManager {
         return String.format(get(Prop.opgg_url), region.name().toLowerCase());
     }
 
+    public String opggChampUrl() {
+        return String.format(get(Prop.opggchamp_url), region.name().toLowerCase());
+    }
+
     public String lolskillUrl() {
         return String.format(get(Prop.lolskill_url), region.name().toLowerCase());
     }
@@ -107,6 +111,10 @@ public class PropertyManager {
         loss,
         streak,
         opgg_url,
-        lolskill_url
+        opggchamp_url,
+        lolskill_url,
+        red,
+        blue,
+        team
     }
 }

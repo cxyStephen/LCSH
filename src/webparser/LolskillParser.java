@@ -33,13 +33,6 @@ public class LolskillParser {
             }
         }
 
-        for(String n : game.getBlueTeam()) {
-            System.out.println("blue:\t" + n);
-        }
-        for(String n : game.getRedTeam()) {
-            System.out.println("red:\t" + n);
-        }
-
         return game;
     }
 

@@ -112,62 +112,81 @@ public class StatsStage extends LCSHStage{
         Platform.runLater(() -> {
             playerBox.getChildren().clear();
 
-            VBox rankBox = new VBox();
-            rankBox.setPrefWidth(paneWidth * 0.3);
-            addChild(rankBox, Util.getImage("rank", p.getRank(), rankBox.getPrefWidth()));
-            addChild(rankBox, createLabel(new String[]{"rank", p.getRank()}, p.getRankString(), rankBox.getPrefWidth()));
-            addChild(rankBox, createLabel(p.getOverallWinLoss(), rankBox.getPrefWidth()));
+            VBox rankBox = rankBox(p);
+            VBox infoBox = infoBox(p);
+            HBox statsBox = statsBox(p, rankBox);
 
-            VBox infoBox = new VBox();
-            infoBox.setFillWidth(true);
-            BorderPane nameBox = new BorderPane();
-            nameBox.setPadding(new Insets(0, 25, 0, 0));
-            nameBox.setLeft(playerButton(p.getName()));
-            Label recentTeammates = recentTeammates(p);
-            nameBox.setRight(recentTeammates);
-            BorderPane.setAlignment(recentTeammates, Pos.CENTER_RIGHT);
-            addChild(infoBox, nameBox);
-
-            HBox statsBox = new HBox(3);
-            statsBox.setFillHeight(true);
             addChild(infoBox, statsBox);
-
-            VBox overallBox = new VBox(5);
-            overallBox.setPrefWidth((paneWidth-rankBox.getPrefWidth()) * 0.4);
-            addChild(overallBox, createLabel("title", p.getSeasonTitle(), 0));
-            Champion[] overallStats = p.getSeasonChamps();
-            for (Champion c : overallStats)
-                addChild(overallBox, championBox(c, false));
-
-            VBox recentBox = new VBox(5);
-            recentBox.setPrefWidth(paneWidth-rankBox.getPrefWidth() - overallBox.getPrefWidth());
-            String recentTitle;
-            switch (p.getNumRecent()) {
-                case 0: recentTitle = pm.get(Prop.no_games);
-                        break;
-                case 1: recentTitle = pm.get(Prop.last_game) + " " + (p.isWinStreak() ? "W" : "L");
-                        break;
-                default: recentTitle = String.format(pm.get(Prop.past_games), p.getNumRecent()) + " " + p.getRecentWLString();
-            }
-            addChild(recentBox, createLabel("title",recentTitle,0));
-            String streakType = p.isWinStreak() ? pm.get(Prop.win) : pm.get(Prop.loss);
-            addChild(recentBox, createLabel(streakType, p.getStreakString(),0));
-            addChild(recentBox, createLabel(p.getKdaString(),0));
-            Champion[] recents = p.getRecentChamps();
-            for (Champion c : recents)
-                addChild(recentBox, championBox(c, true));
-
-            addChild(statsBox, overallBox);
-            addChild(statsBox, recentBox);
-
             addChild(playerBox, rankBox);
             addChild(playerBox, infoBox);
         });
     }
 
+    VBox rankBox(Player p) {
+        VBox rankBox = new VBox();
+        rankBox.setPrefWidth(paneWidth * 0.3);
+        addChild(rankBox, Util.getImage("rank", p.getRank(), rankBox.getPrefWidth()));
+        addChild(rankBox, createLabel(new String[]{"rank", p.getRank()}, p.getRankString(), rankBox.getPrefWidth()));
+        addChild(rankBox, createLabel(p.getOverallWinLoss(), rankBox.getPrefWidth()));
+        return rankBox;
+    }
+
+    VBox infoBox(Player p) {
+        VBox infoBox = new VBox();
+        infoBox.setFillWidth(true);
+        BorderPane nameBox = new BorderPane();
+        nameBox.setPadding(new Insets(0, 25, 0, 0));
+        nameBox.setLeft(playerButton(p.getName()));
+        Label recentTeammates = recentTeammates(p);
+        nameBox.setRight(recentTeammates);
+        BorderPane.setAlignment(recentTeammates, Pos.CENTER_RIGHT);
+        addChild(infoBox, nameBox);
+        return infoBox;
+    }
+
+    HBox statsBox(Player p, VBox rankBox) {
+        HBox statsBox = new HBox(3);
+        statsBox.setFillHeight(true);
+
+        VBox overallBox = new VBox(5);
+        overallBox.setPrefWidth((paneWidth-rankBox.getPrefWidth()) * 0.4);
+        addChild(overallBox, createLabel("title", p.getSeasonTitle(), 0));
+        Champion[] overallStats = p.getSeasonChamps();
+        for (Champion c : overallStats)
+            addChild(overallBox, championBox(c, false));
+
+        VBox recentBox = new VBox(5);
+        recentBox.setPrefWidth(paneWidth-rankBox.getPrefWidth() - overallBox.getPrefWidth());
+        String recentTitle;
+        switch (p.getNumRecent()) {
+            case 0: recentTitle = pm.get(Prop.no_games);
+                break;
+            case 1: recentTitle = pm.get(Prop.last_game) + " " + (p.isWinStreak() ? "W" : "L");
+                break;
+            default: recentTitle = String.format(pm.get(Prop.past_games), p.getNumRecent()) + " " + p.getRecentWLString();
+        }
+        addChild(recentBox, createLabel("title",recentTitle,0));
+        String streakType = p.isWinStreak() ? pm.get(Prop.win) : pm.get(Prop.loss);
+        addChild(recentBox, createLabel(streakType, p.getStreakString(),0));
+        addChild(recentBox, createLabel(p.getKdaString(),0));
+        Champion[] recents = p.getRecentChamps();
+        for (Champion c : recents)
+            addChild(recentBox, championBox(c, true));
+
+        addChild(statsBox, overallBox);
+        addChild(statsBox, recentBox);
+
+        return statsBox;
+    }
+
     Button playerButton(String name) {
+        return playerButton(name, "Teamless");
+    }
+
+    Button playerButton(String name, String team) {
         Button btn = new Button(name);
         btn.setId("playerButton");
+        btn.getStyleClass().add(team);
         btn.setOnAction(e->{
             try {
                 Desktop.getDesktop().browse(new URI(OpggParser.getOpggUrl(name)));
@@ -239,6 +258,10 @@ public class StatsStage extends LCSHStage{
         return playerNames;
     }
 
+    Player getRelevantStats(String name) throws IOException {
+        return OpggParser.getPlayerInfo(name);
+    }
+
     class opggTask extends Task {
         private final String name;
 
@@ -248,7 +271,7 @@ public class StatsStage extends LCSHStage{
 
         @Override
         protected Void call() throws IOException {
-            populatePlayerBox(playerHBoxes.get(name), OpggParser.getPlayerInfo(name));
+            populatePlayerBox(playerHBoxes.get(name), getRelevantStats(name));
             return null;
         }
     }

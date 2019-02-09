@@ -2,12 +2,11 @@ package webparser;
 
 import data.Champion;
 import data.Player;
-import propertymanager.PropertyManager;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import propertymanager.PropertyManager;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -20,17 +19,29 @@ import java.util.TreeSet;
 
 public class OpggParser {
 
-    public static Player getPlayerInfo(String name) throws IOException {
-        URL opgg = new URL(getOpggUrl(name));
-        Document doc = Jsoup.parse(opgg, 10000);
-
+    private static Player getPlayerBaseStats(String name, Document doc) {
         Player p = new Player(name);
 
         getRankInfo(p, doc);
-        getChampInfo(p, doc);
         getRecentInfo(p, doc);
         getRecentTeammates(p,doc);
 
+        return p;
+    }
+
+    public static Player getPlayerInfo(String name) throws IOException {
+        Document doc = Jsoup.parse(new URL(getOpggUrl(name)), 10000);
+        Player p = getPlayerBaseStats(name, doc);
+        getChampInfo(p, doc);
+        return p;
+    }
+
+    public static Player getPlayerChampInfo(String name, String champ) throws IOException {
+        Document doc = Jsoup.parse(new URL(getOpggUrl(name)), 10000);
+        Player p = getPlayerBaseStats(name, doc);
+
+        Document champDoc = Jsoup.parse(new URL(getOpggChampUrl(name)), 10000);
+        getChampInfo(p, champ, doc);
         return p;
     }
 
@@ -146,6 +157,10 @@ public class OpggParser {
         p.setSeasonChamps(champs);
     }
 
+    static void getChampInfo(Player p, String champion, Document doc) {
+
+    }
+
     static void getRecentInfo(Player p, Document doc) {
         Map<String, Champion> recentChamps = new LinkedHashMap<>();
 
@@ -208,7 +223,7 @@ public class OpggParser {
         p.setRecentChamps(recent);
     }
 
-    public static void getRecentTeammates(Player p, Document doc){
+    private static void getRecentTeammates(Player p, Document doc){
         Element info = doc.select("div.SummonersMostGame.Box").first();
         if(info != null) {
             Elements teammates = info.select("td.SummonerName.Cell");
@@ -219,6 +234,16 @@ public class OpggParser {
 
     public static String getOpggUrl(String name) {
         String opggUrl = PropertyManager.getPropertyManager().opggUrl();
+        try {
+            return opggUrl + URLEncoder.encode(name.replaceAll("\\s",""), "UTF8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return e.getMessage();
+        }
+    }
+
+    private static String getOpggChampUrl(String name) {
+        String opggUrl = PropertyManager.getPropertyManager().opggChampUrl();
         try {
             return opggUrl + URLEncoder.encode(name.replaceAll("\\s",""), "UTF8");
         } catch (UnsupportedEncodingException e) {

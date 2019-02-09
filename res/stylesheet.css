@@ -43,7 +43,6 @@
     -fx-border-width: 0;
     -fx-background-color: transparent;
     -fx-font-size: 16;
-    -fx-text-fill: #ff598e;
     -fx-padding: 0;
 }
 
@@ -138,6 +137,22 @@
 
 .Challenger {
     -fx-text-fill: #fa576f;
+}
+
+.Blue {
+    -fx-text-fill: #1f8ecd;
+}
+
+.Red {
+    -fx-text-fill: #ee5a52;
+}
+
+.Teamless {
+    -fx-text-fill: #ff598e;
+}
+
+.bold {
+    -fx-font-weight: bold;
 }
 
 #infoBox {

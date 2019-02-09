@@ -27,7 +27,6 @@ public class Controller {
     public Controller() {
         this.pm = PropertyManager.getPropertyManager();
         pm.setOs(System.getProperty("os.name"));
-        System.out.println(pm.getOs());
         initListeners();
     }
 
@@ -59,6 +58,9 @@ public class Controller {
         if(currentStats != null)
             currentStats.close();
 
+        if(currentGame != null)
+            currentGame.close();
+
         currentStats = new StatsStage(players);
         currentStats.show();
 
@@ -77,7 +79,6 @@ public class Controller {
 
     private void gameStarted(){
         String player = currentStats.getPlayerNames().get(0);
-        System.out.println(player);
 
         Platform.runLater(() -> {
             if (currentGame != null)
@@ -107,7 +108,6 @@ public class Controller {
         protected Void call() {
             boolean started = false;
             while(!started && timeElapsed < 360000) {
-                System.out.println("waiting for league to start");
                 try {
                     String line;
                     Process p;

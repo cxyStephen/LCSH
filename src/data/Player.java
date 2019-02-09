@@ -37,6 +37,8 @@ public class Player {
 
     private List<String> recentTeammates = new ArrayList<>();
 
+    private String team = "Teamless";
+
     private Champion currChamp;
     private String summoner1;
     private String summoner2;
@@ -44,6 +46,10 @@ public class Player {
     public Player(String name) {
         pm = PropertyManager.getPropertyManager();
         this.name = name.trim();
+    }
+
+    public void setTeam(String team) {
+        this.team = team;
     }
 
     public void setQueueType(String queueType) {
@@ -158,6 +164,8 @@ public class Player {
     public String getName() {
         return name;
     }
+
+    public String getTeam() { return team; }
 
     public String getQueueType() {
         return queueType;

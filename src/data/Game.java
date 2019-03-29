@@ -7,12 +7,16 @@ import java.util.Map;
 
 public class Game {
 
+    boolean isStarted;
+
     String queueType = "";
+    String map = "";
 
     List<String> blueTeam = new ArrayList<>();
     List<String> redTeam = new ArrayList<>();
 
-    Map<String, Player> players = new HashMap<>();
+    Map<String, String> champions = new HashMap<>();
+    Map<String, String[]> summonerSpells = new HashMap<>();
 
     public List<String> getBlueTeam() {
         return blueTeam;
@@ -22,7 +26,32 @@ public class Game {
         return redTeam;
     }
 
-    public Map<String, Player> getPlayers() {
-        return players;
+    public Map<String, String> getChampions() {
+        return champions;
+    }
+
+    public Map<String, String[]> getSummonerSpells() {
+        return summonerSpells;
+    }
+
+    public boolean isStarted() {
+        return isStarted;
+    }
+
+    public void setStarted(boolean s) {
+        isStarted = s;
+    }
+
+    public String getQueueType() {
+        return queueType;
+    }
+
+    public String getMap() {
+        return map;
+    }
+
+    public void setGameType(String queueType, String map) {
+        this.queueType = queueType;
+        this.map = map;
     }
 }

@@ -32,16 +32,13 @@ public class Player {
     private int streak = 0;
     private boolean isWinStreak = false;
 
+    private Champion currChamp;
     private Champion[] seasonChamps;
     private Champion[] recentChamps;
 
     private List<String> recentTeammates = new ArrayList<>();
 
     private String team = "Teamless";
-
-    private Champion currChamp;
-    private String summoner1;
-    private String summoner2;
 
     public Player(String name) {
         pm = PropertyManager.getPropertyManager();
@@ -70,6 +67,10 @@ public class Player {
 
     public void setLosses(int losses) {
         this.losses = losses;
+    }
+
+    public void setCurrChamp(Champion champ) {
+        this.currChamp = champ;
     }
 
     public void setSeasonChamps(Champion[] seasonChamps) {
@@ -185,7 +186,7 @@ public class Player {
 
     public String getStreakString() {
         if(streak == 0)
-            return pm.get(Prop.no_streak);
+            return pm.get(Prop.no_data);
 
         String streakType = isWinStreak ? pm.get(Prop.win) : pm.get(Prop.loss);
         return String.format(pm.get(Prop.streak), streak, streakType);
@@ -203,6 +204,10 @@ public class Player {
         if(queueType.toLowerCase().contains("rank") || queueType.toLowerCase().contains("flex"))
             return pm.get(Prop.season_stats);
         return pm.get(Prop.prev_season);
+    }
+
+    public Champion getCurrChamp() {
+        return currChamp;
     }
 
     public Champion[] getSeasonChamps(){

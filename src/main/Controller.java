@@ -90,9 +90,12 @@ public class Controller {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            currentGame = new GameStage(game);
-            currentGame.show();
-            currentStats.close();
+
+            if(game.isStarted()) {
+                currentGame = new GameStage(game);
+                currentGame.show();
+                currentStats.close();
+            }
         });
     }
 
@@ -102,6 +105,7 @@ public class Controller {
     }
 
     class gameStartTask extends Task {
+        static final int delay = 3000;
         long timeElapsed = 0;
 
         @Override
@@ -128,9 +132,9 @@ public class Controller {
                     return null;
                 }
 
-                timeElapsed += 5000;
+                timeElapsed += delay;
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(delay);
                 } catch (InterruptedException e) {
                     return null;
                 }

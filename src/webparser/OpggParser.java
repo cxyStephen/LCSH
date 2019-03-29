@@ -41,7 +41,7 @@ public class OpggParser {
         Player p = getPlayerBaseStats(name, doc);
 
         Document champDoc = Jsoup.parse(new URL(getOpggChampUrl(name)), 10000);
-        getChampInfo(p, champ, doc);
+        getChampInfo(p, champ, champDoc);
         return p;
     }
 
@@ -159,6 +159,48 @@ public class OpggParser {
 
     static void getChampInfo(Player p, String champion, Document doc) {
 
+        Elements champions = doc.select("tr.Row.TopRanker");
+        for(Element c : champions) {
+            String cstring = c.select("td.ChampionName.Cell").text();
+            if(!cstring.equals(champion))
+                continue;
+
+            Element w = c.selectFirst("div.Text.Left");
+            Element l = c.selectFirst("div.Text.Right");
+
+            int wins = 0;
+            int losses = 0;
+
+            if(w != null)
+                wins = Integer.parseInt(w.text().substring(0,w.text().indexOf("W")));
+            if(l != null)
+                losses = Integer.parseInt(l.text().substring(0,l.text().indexOf("L")));
+
+            double k = Double.parseDouble(c.selectFirst("span.Kill").text());
+            double d = Double.parseDouble(c.selectFirst("span.Death").text());
+            double a = Double.parseDouble(c.selectFirst("span.Assist").text());
+
+            int games = wins + losses;
+            int kills = (int)Math.round(k * games);
+            int deaths = (int)Math.round(d* games);
+            int assists = (int)Math.round(a* games);
+
+            Elements championStats = c.select("td.Value.Cell");
+            String cs = championStats.get(1).text();
+            String dmg = championStats.get(4).text();
+
+            double avgCs = Double.parseDouble(cs);
+            int avgDmg = Integer.parseInt(dmg.replace(",",""));
+
+            Champion champ = new Champion(champion, wins, losses, kills, deaths, assists);
+            champ.setAvgCs(avgCs);
+            champ.setAvgDmg(avgDmg);
+
+            p.setCurrChamp(champ);
+            return;
+        }
+
+        p.setCurrChamp(new Champion(champion));
     }
 
     static void getRecentInfo(Player p, Document doc) {

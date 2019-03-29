@@ -13,6 +13,9 @@ public class Champion {
     private int deaths;
     private int assists;
 
+    private double avgCs;
+    private int avgDmg;
+
     public Champion(String name) {
         this(name, 0, 0, 0, 0, 0);
     }
@@ -62,6 +65,14 @@ public class Champion {
             losses++;
     }
 
+    public void setAvgCs(double cs) {
+        avgCs = cs;
+    }
+
+    public void setAvgDmg(int dmg) {
+        avgDmg = dmg;
+    }
+
     public String winLoss(){
         return wins + "W-" + losses + "L";
     }
@@ -70,11 +81,19 @@ public class Champion {
         return (int)(Math.round(100.0 * wins/games()));
     }
 
-    public double kda(){
-        return Util.kda(kills, deaths, assists, 1);
+    public String kda(){
+        return Util.kdaString(kills, deaths, assists, 1);
     }
 
     public String avgKda() {
         return Util.avgKda(kills, deaths, assists, games(), 1);
+    }
+
+    public int avgDmg() {
+        return avgDmg;
+    }
+
+    public double avgCs() {
+        return avgCs;
     }
 }

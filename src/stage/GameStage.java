@@ -15,8 +15,10 @@ public class GameStage extends LCSHStage {
         super();
         this.game = game;
 
-        blueTeamStats = new TeamStatsStage(game.getBlueTeam(), true);
-        redTeamStats = new TeamStatsStage(game.getRedTeam(), false);
+        blueTeamStats = new TeamStatsStage(game.getBlueTeam(), game.getChampions(),
+                game.getSummonerSpells(), true);
+        redTeamStats = new TeamStatsStage(game.getRedTeam(), game.getChampions(),
+                game.getSummonerSpells(), false);
 
         blueTeamStats.show();
         redTeamStats.show();
@@ -29,5 +31,12 @@ public class GameStage extends LCSHStage {
 
     Scene initLayout() {
         return new Scene(new HBox());
+    }
+
+    @Override
+    public void close() {
+        blueTeamStats.close();
+        redTeamStats.close();
+        hide();
     }
 }

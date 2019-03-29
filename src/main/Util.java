@@ -23,7 +23,7 @@ public class Util {
 
     public static String kdaString(int k, int d, int a, int decimals) {
         double kda = kda(k, d, a, decimals);
-        if(kda == -1)
+        if(kda == -1.0)
             return "∞";
         String s = "" + kda;
         while(s.substring(s.indexOf(".")+1).length() < decimals)
@@ -57,8 +57,9 @@ public class Util {
     public static ImageView getImage(String type, String name, double width) {
         if(name != null)
             name = name.replaceAll("\\s", "")
-                    .replace("&#039;","")
-                    .replace(".","");
+                    .replace("&#039;", "")
+                    .replace(".", "")
+                    .replace("'", "");
         else
             name = "default";
         String url = type + "/" + name + ".png";

@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.*;
 import main.Util;
+import webparser.LolskillParser;
 import webparser.OpggParser;
 
 import javafx.application.Platform;
@@ -23,20 +24,17 @@ import javafx.stage.Screen;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import propertymanager.PropertyManager.Prop;
 
 public class StatsStage extends LCSHStage{
 
-    private Map<String, HBox> playerHBoxes;
+    Map<String, HBox> playerHBoxes;
     double paneWidth;
     double paneHeight;
-    private List<String> playerNames;
+    List<String> playerNames;
+    List<Thread> threads;
 
     public StatsStage(List<String> playerNames) {
         super();
@@ -47,9 +45,11 @@ public class StatsStage extends LCSHStage{
 
         addElements();
 
+        threads = new ArrayList<>();
         for(String name : playerNames) {
             Task task = new opggTask(name);
             Thread th = new Thread(task);
+            threads.add(th);
             th.setDaemon(true);
             th.start();
         }
@@ -148,18 +148,32 @@ public class StatsStage extends LCSHStage{
         HBox statsBox = new HBox(3);
         statsBox.setFillHeight(true);
 
-        VBox overallBox = new VBox(5);
+        VBox overallBox = overallBox(p);
         overallBox.setPrefWidth((paneWidth-rankBox.getPrefWidth()) * 0.4);
+
+        VBox recentBox = recentBox(p);
+        recentBox.setPrefWidth(paneWidth-rankBox.getPrefWidth() - overallBox.getPrefWidth());
+
+        addChild(statsBox, overallBox);
+        addChild(statsBox, recentBox);
+
+        return statsBox;
+    }
+
+    VBox overallBox(Player p) {
+        VBox overallBox = new VBox(5);
         addChild(overallBox, createLabel("title", p.getSeasonTitle(), 0));
         Champion[] overallStats = p.getSeasonChamps();
         for (Champion c : overallStats)
             addChild(overallBox, championBox(c, false));
+        return overallBox;
+    }
 
+    VBox recentBox(Player p) {
         VBox recentBox = new VBox(5);
-        recentBox.setPrefWidth(paneWidth-rankBox.getPrefWidth() - overallBox.getPrefWidth());
         String recentTitle;
         switch (p.getNumRecent()) {
-            case 0: recentTitle = pm.get(Prop.no_games);
+            case 0: recentTitle = pm.get(Prop.no_recent);
                 break;
             case 1: recentTitle = pm.get(Prop.last_game) + " " + (p.isWinStreak() ? "W" : "L");
                 break;
@@ -172,11 +186,7 @@ public class StatsStage extends LCSHStage{
         Champion[] recents = p.getRecentChamps();
         for (Champion c : recents)
             addChild(recentBox, championBox(c, true));
-
-        addChild(statsBox, overallBox);
-        addChild(statsBox, recentBox);
-
-        return statsBox;
+        return recentBox;
     }
 
     Button playerButton(String name) {
@@ -270,9 +280,15 @@ public class StatsStage extends LCSHStage{
         }
 
         @Override
-        protected Void call() throws IOException {
-            populatePlayerBox(playerHBoxes.get(name), getRelevantStats(name));
-            return null;
+        protected Void call() {
+            try {
+                Player p = getRelevantStats(name);
+                populatePlayerBox(playerHBoxes.get(name), p);
+                LolskillParser.preload(name);
+                return null;
+            } catch (IOException e) {
+                return null;
+            }
         }
     }
 }

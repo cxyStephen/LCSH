@@ -45,8 +45,7 @@ public class LolskillParser {
                     addTo = game.getRedTeam();
 
                 String playerName = player.select("p.summoner-name").text();
-                String champion = player.select("p.champion-name").text();
-
+                String champion = player.select("img.champion-mastery.tip").first().attr("data-champion-name");
                 String[] summonerSpells = new String[2];
                 summonerSpells[0] = player.select("img.spell.tip").first().attr("data-spell-name");
                 summonerSpells[1] = player.select("img.spell.tip").last().attr("data-spell-name");
@@ -58,11 +57,6 @@ public class LolskillParser {
         }
 
         return game;
-    }
-
-    public static void preload(String name) throws IOException {
-        URL lolskill = new URL(getLolskillUrl(name));
-        Jsoup.parse(lolskill, 10000);
     }
 
     public static String getLolskillUrl(String name) {

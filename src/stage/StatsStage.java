@@ -284,7 +284,6 @@ public class StatsStage extends LCSHStage{
             try {
                 Player p = getRelevantStats(name);
                 populatePlayerBox(playerHBoxes.get(name), p);
-                LolskillParser.preload(name);
                 return null;
             } catch (IOException e) {
                 return null;

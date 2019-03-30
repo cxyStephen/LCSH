@@ -18,6 +18,9 @@ public class Game {
     Map<String, String> champions = new HashMap<>();
     Map<String, String[]> summonerSpells = new HashMap<>();
 
+    int totalRank = 0;
+    int numRankedPlayers = 0;
+
     public List<String> getBlueTeam() {
         return blueTeam;
     }
@@ -48,6 +51,17 @@ public class Game {
 
     public String getMap() {
         return map;
+    }
+
+    public void addRank(int i) {
+        totalRank += i;
+        numRankedPlayers++;
+    }
+
+    public int getAverageRank() {
+        if (numRankedPlayers == 0)
+            return -1;
+        return (int) Math.round((double) totalRank / numRankedPlayers);
     }
 
     public void setGameType(String queueType, String map) {

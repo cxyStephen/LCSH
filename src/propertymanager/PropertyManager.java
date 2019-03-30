@@ -117,6 +117,7 @@ public class PropertyManager {
         lolskill_url,
         red,
         blue,
-        team
+        team,
+        average_rank
     }
 }

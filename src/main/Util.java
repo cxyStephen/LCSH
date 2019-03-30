@@ -86,7 +86,7 @@ public class Util {
         }
 
         int rankIndex = n/(DIVISIONS.length * 100);
-        int divisionIndex = DIVISIONS.length - ((n % (DIVISIONS.length * 100)) / 100);
+        int divisionIndex = DIVISIONS.length - ((n % (DIVISIONS.length * 100)) / 100) - 1;
         result[0] = RANKS[rankIndex];
         result[1] = DIVISIONS[divisionIndex];
         result[2] = (n % 100) + "";

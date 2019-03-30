@@ -36,33 +36,9 @@ public class MainStage extends LCSHStage{
         main.setPrefWidth(300);
         main.setMaxWidth(300);
         main.setId("infoBox");
-        HBox topBar = new HBox();
-        Label title = new Label(pm.get(Prop.title) + " " + pm.version());
-        title.setPrefSize(210, 40);
-        title.getStyleClass().add("info");
-        Button minimize = new Button("-");
-        minimize.setPrefSize(45,40);
-        minimize.setId("minButton");
-        Button exit = new Button("x");
-        exit.setPrefSize(45,40);
-        exit.setId("closeButton");
-        topBar.getChildren().addAll(title, minimize, exit);
-        main.setTop(topBar);
 
-        minimize.setOnAction(e->{
-            Platform.runLater(() -> {
-                if (SystemTray.isSupported()) {
-                    hide();
-                } else {
-                    setIconified(true);
-                }
-            });
-        });
-
-        exit.setOnAction(e-> {
-            fireEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSE_REQUEST));
-        });
-
+        Button[] topButtons = {minimizeButton(), exitButton()};
+        HBox topBar = titleBar(topButtons);
         topBar.setOnMousePressed(event -> {
             xOffset = getX() - event.getScreenX();
             yOffset = getY() - event.getScreenY();
@@ -72,6 +48,8 @@ public class MainStage extends LCSHStage{
             setX(event.getScreenX() + xOffset);
             setY(event.getScreenY() + yOffset);
         });
+
+        main.setTop(topBar);
 
         Label info = new Label(pm.get(Prop.info));
         info.setId("infoText");

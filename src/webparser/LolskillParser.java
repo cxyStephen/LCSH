@@ -1,6 +1,7 @@
 package webparser;
 
 import data.Game;
+import main.Util;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -46,9 +47,20 @@ public class LolskillParser {
 
                 String playerName = player.select("p.summoner-name").text();
                 String champion = player.select("img.champion-mastery.tip").first().attr("data-champion-name");
+
                 String[] summonerSpells = new String[2];
                 summonerSpells[0] = player.select("img.spell.tip").first().attr("data-spell-name");
                 summonerSpells[1] = player.select("img.spell.tip").last().attr("data-spell-name");
+
+                Element rank = player.selectFirst("img.rank.tip");
+
+                try {
+                    String league = rank.attr("data-tier");
+                    String division = rank.attr("data-division");
+                    int lp = Integer.parseInt(rank.attr("data-leaguepoints"));
+
+                    game.addRank(Util.rankToInt(league, division, lp));
+                } catch (NullPointerException e) {}
 
                 addTo.add(playerName);
                 game.getChampions().put(playerName, champion);
